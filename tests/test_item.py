@@ -19,3 +19,8 @@ def test_apply_discount():
 def test_instantiate_from_csv():
     Item.instantiate_from_csv()  # создание объектов из данных файла
     assert len(Item.all) == 5
+
+
+def test_name():
+    item1.name = 'SuperSlimSmartphone'
+    assert item1.name == 'SuperSlimS'
