@@ -5,11 +5,13 @@ import pytest
 # item1 = Item("Смартфон", 10000, 20)
 # item2 = Item("Ноутбук", 20000, 5)
 
+
 @pytest.fixture
 def item_one():
     return Item("Смартфон", 10000, 20)
 
-def test_calculate_total_price():
+
+def test_calculate_total_price(item_one):
     assert item_one.calculate_total_price() == 200000
     # assert item2.calculate_total_price() == 100000
 
@@ -28,3 +30,11 @@ def test_instantiate_from_csv():
 def test_name(item_one):
     item_one.name = 'SuperSlimSmartphone'
     assert item_one.name == 'SuperSlimS'
+
+
+def test_repr(item_one):
+    assert repr(item_one) == "Item('Смартфон', 10000, 20)"
+
+
+def test_str(item_one):
+    assert str(item_one) == 'Смартфон'
