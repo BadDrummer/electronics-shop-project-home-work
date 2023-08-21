@@ -8,8 +8,7 @@ class Item:
     """
     pay_rate = 1.0
     all = []
-    CSV_PATH = os.path.join('/', 'Users', 'Максим', 'PycharmProjects',
-                            'electronics-shop-project-home-work', 'src', 'items.csv')
+    CSV_PATH = os.path.join(os.path.dirname(__file__), 'items.csv')
 
     def __init__(self, name: str, price: float, quantity: int):
         """
@@ -45,25 +44,19 @@ class Item:
 
     @name.setter
     def name(self, new_name: str):
-        if len(new_name) > 10:
-            self.__name = new_name
         self.__name = new_name[:10]
 
     @classmethod
-    def instantiate_from_csv(cls):
+    def instantiate_from_csv(cls, path=CSV_PATH):
         """instantiation of class Item with data from items.csv file"""
         cls.all = []
-        with open(cls.CSV_PATH) as csvfile:
+        with (open(path) as csvfile):
             reader = csv.DictReader(csvfile)
             for row in reader:
-                try:
-                    cls(
-                        (row['name']),
-                        cls.string_to_number(row['price']),
-                        cls.string_to_number(row['quantity'])
-                    )
-                except FileNotFoundError:
-                    print('Error, could not find the value')
+                name = row['name']
+                price = cls.string_to_number(row['price'])
+                quantity = cls.string_to_number(row['quantity'])
+                cls(name, price, quantity)
 
     @staticmethod
     def string_to_number(num_str) -> int:
