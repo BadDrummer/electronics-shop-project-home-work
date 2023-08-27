@@ -62,13 +62,16 @@ class Item:
     def instantiate_from_csv(cls, path=CSV_PATH):
         """instantiation of class Item with data from items.csv file"""
         cls.all = []
-        with (open(path) as csvfile):
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                name = row['name']
-                price = cls.string_to_number(row['price'])
-                quantity = cls.string_to_number(row['quantity'])
-                cls(name, price, quantity)
+        try:
+            with (open(path) as csvfile):
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    name = row['name']
+                    price = cls.string_to_number(row['price'])
+                    quantity = cls.string_to_number(row['quantity'])
+                    cls(name, price, quantity)
+        except FileNotFoundError:
+            print('File item.csv not found')
 
     @staticmethod
     def string_to_number(num_str) -> int:
