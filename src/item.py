@@ -18,16 +18,22 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
-        self.__name = name
+        self._name = name
         self.price = price
         self.quantity = quantity
         Item.all.append(self)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
+        return f"{self.__class__.__name__}('{self._name}', {self.price}, {self.quantity})"
 
     def __str__(self):
-        return self.__name
+        return self._name
+
+    def __add__(self, other):
+        if issubclass(other.__class__, self.__class__):
+            return self.quantity + other.quantity
+        else:
+            raise TypeError("При сложении оъекта должен быть типа Item или его потомками")
 
     def calculate_total_price(self) -> float:
         """
@@ -46,11 +52,11 @@ class Item:
 
     @property
     def name(self):
-        return self.__name
+        return self._name
 
     @name.setter
     def name(self, new_name: str):
-        self.__name = new_name[:10]
+        self._name = new_name[:10]
 
     @classmethod
     def instantiate_from_csv(cls, path=CSV_PATH):
