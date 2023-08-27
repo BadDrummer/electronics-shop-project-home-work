@@ -2,6 +2,12 @@ import csv
 import os
 
 
+class InstantiateCSVError(Exception):
+
+    def __init__(self):
+        self.message = 'File item.csv is damaged or empty'
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -70,8 +76,12 @@ class Item:
                     price = cls.string_to_number(row['price'])
                     quantity = cls.string_to_number(row['quantity'])
                     cls(name, price, quantity)
+                    if len((name, price, quantity)) != 3:
+                        raise InstantiateCSVError
         except FileNotFoundError:
             print('File item.csv not found')
+        except InstantiateCSVError as ex:
+            print(ex.message)
 
     @staticmethod
     def string_to_number(num_str) -> int:
