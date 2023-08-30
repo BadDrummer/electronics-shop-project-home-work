@@ -71,17 +71,17 @@ class Item:
         try:
             with (open(path) as csvfile):
                 reader = csv.DictReader(csvfile)
+                keys = {'price', 'name', 'quantity'}
+
                 for row in reader:
+                    if set(row.keys()) != keys:
+                        raise InstantiateCSVError
                     name = row['name']
                     price = cls.string_to_number(row['price'])
                     quantity = cls.string_to_number(row['quantity'])
                     cls(name, price, quantity)
-                    if len((name, price, quantity)) != 3:
-                        raise InstantiateCSVError
         except FileNotFoundError:
-            print('File item.csv not found')
-        except InstantiateCSVError as ex:
-            print(ex.message)
+            raise FileNotFoundError('File item.csv not found')
 
     @staticmethod
     def string_to_number(num_str) -> int:
